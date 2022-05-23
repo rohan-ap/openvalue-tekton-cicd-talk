@@ -6,14 +6,19 @@ metadata:
 spec:
   pipelineRef:
     name: hello-world-service
+  params:
+    - name: commit
+      value: 463873e196274e570fe98e55ba4075b7b9333f8a
+    - name: branch
+      value: master
   workspaces:
     - name: maven-settings
       emptyDir: {}
     - name: shared-workspace
-        volumeClaimTemplate:
-          spec:
-            accessModes:
-              - ReadWriteOnce
-            resources:
-              requests:
-                storage: 1Gi
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi

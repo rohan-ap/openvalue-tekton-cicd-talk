@@ -5,6 +5,9 @@ metadata:
   name: hello-world-service
 spec:
   params:
+    - description: The Git commit
+      name: commit
+      type: string
     - description: The Git branch
       name: branch
       type: string
@@ -53,16 +56,16 @@ spec:
         - name: CONTEXT
           value: hello-world-service
         - name: IMAGE
-          value: "image-registry.openshift-image-registry.svc:5000/{{ application_namespace }}/{{ pipeline.name }}:latest"
+          value: "image-registry.openshift-image-registry.svc:5000/openvalue-ops/hello-world-service:latest"
         - name: EXTRA_ARGS
           value:
             - "--destination"
-            - "image-registry.openshift-image-registry.svc:5000/{{ application_namespace }}/{{ pipeline.name }}:$(params.branch)"
+            - "image-registry.openshift-image-registry.svc:5000/openvalue-ops/hello-world-service:$(params.branch)"
             - "--destination"
-            - "image-registry.openshift-image-registry.svc:5000/{{ application_namespace }}/{{ pipeline.name }}:$(params.commit)"
+            - "image-registry.openshift-image-registry.svc:5000/openvalue-ops/hello-world-service:$(params.commit)"
             - "--skip-tls-verify"
       runAfter:
-        - maven-build
+        - build
       workspaces:
         - name: source
           workspace: shared-workspace
