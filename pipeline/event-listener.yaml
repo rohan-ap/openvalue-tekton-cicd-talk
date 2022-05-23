@@ -1,0 +1,24 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: EventListener
+metadata:
+  namespace: openvalue-ops
+  name: github-push-hello-world-service
+spec:
+#  serviceAccountName: tekton-triggers
+  triggers:
+    - name: commit-push
+      interceptors:
+        - github:
+            eventTypes: ["push"]
+        - cel:
+            filter: "body.ref.startsWith('refs/heads/')"
+            overlays:
+              - key: branch
+                expression: "body.ref.split('/')[2]"
+      bindings:
+        - name: commit
+          value: $(body.after)
+        - name: branch
+          value: $(extensions.branch)
+      template:
+        ref: tt-github-push-hello-world-service

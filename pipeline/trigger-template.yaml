@@ -1,0 +1,39 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  namespace: openvalue-ops
+  name: tt-github-push-hello-world-service
+spec:
+  params:
+    - name: commit
+      description: The git revision (SHA)
+    - name: branch
+      description: The name of the Git branch
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        namespace: openvalue-ops
+        generateName: hello-world-service-run-
+      spec:
+#        serviceAccountNames:
+#          - taskName: deploy
+#            serviceAccountName: pipeline
+        pipelineRef:
+          name: hello-world-service
+        params:
+          - name: commit
+            value: $(tt.params.commit)
+          - name: branch
+            value: $(tt.params.branch)
+        workspaces:
+          - name: maven-settings
+            emptyDir: {}
+          - name: shared-workspace
+            volumeClaimTemplate:
+              spec:
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 1Gi

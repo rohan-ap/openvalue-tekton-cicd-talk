@@ -1,0 +1,15 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  namespace: openvalue-ops
+  name: slack-notify
+spec:
+  params:
+    - name: text
+      type: string
+  steps:
+    - name: notify
+      image: "alpine:latest"
+      script: |
+        apk add curl
+        curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"$(params.text)\"}" https://hooks.slack.com/services/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
