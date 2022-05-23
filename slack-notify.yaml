@@ -12,4 +12,4 @@ spec:
       image: "alpine:latest"
       script: |
         apk add curl
-        curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"$(params.text)\"}" https://hooks.slack.com/services/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
+        curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"$(params.text)\"}" <URL_HERE>
