@@ -2,6 +2,7 @@
 
 ## Prerequisites
 - A Kubernetes cluster on Google Cloud Platform
+- Enable Artifact Registry on Google Cloud Platform and create a Docker registry
 - Be authenticated via gcloud and kubectl
 - A Slack workspace and app with incoming webhook URL
 ### Tools required
@@ -17,6 +18,11 @@
 4. Create a service account in GCP, grant `Artifact Registry Administrator` role and generate an access key
 5. Copy the content of the downloaded access key and replace `<JSON_HERE>` with the access key in `k8s-resources/gcp-creds.yaml`
 6. `kubectl apply -f gcp-creds.yaml`
+7. Replace `europe-west1-docker.pkg.dev/openvalue-tekton-cicd-talk/docker/hello-world-service` with `<REGION>-docker.pkg.dev/<PROJECT-ID>/<REGISTRY_NAME>/hello-world-service`
+   1. Region you created the Artifact Registry in
+   2. Project ID is whatever you've chosen upon creation
+   3. Registry name is the name of the Docker registry
+8. `./install-pipeline.sh`
 
 ## Run the pipeline
 1. `kubectl create -f pipeline/pipeline-run.yaml`
