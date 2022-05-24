@@ -85,7 +85,7 @@ spec:
         - name: charts_dir
           value: hello-world-service/helm
         - name: release_name
-          value: hello-world-service-release
+          value: hello-world-service
         - name: release_namespace
           value: openvalue-prd
         - name: overwrite_values
