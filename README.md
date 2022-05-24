@@ -1,5 +1,10 @@
 # openvalue-tekton-cicd-talk
 
+**[!!!] NOTE:** *Resources installed for the Tekton CI/CD talk. Keep in mind that it's not recommend to run the same setup in production. While the installation
+of Tekton is harmless, I take shortcuts to create a service account with `Artifact Registry Administrator` which has too much permissions
+to only store images in the artifact registry. Also the default kubernetes namespace service account of openvalue-ops namespace is granted the cluster-admin role to be able
+to deploy applications in all namespaces. All done for the sake of simplicity.*
+
 ## Prerequisites
 - A Kubernetes cluster on Google Cloud Platform
 - Enable Artifact Registry on Google Cloud Platform and create a Docker registry
