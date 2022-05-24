@@ -8,9 +8,9 @@ spec:
     name: hello-world-service
   params:
     - name: commit
-      value: a58868ad8e8aa9f700422da8f3cb4a609f133feb
+      value: e041be9627a74865694a1a327a8ec3f00ffe7e8f
     - name: branch
-      value: master
+      value: openvalue-demo
   workspaces:
     - name: maven-settings
       emptyDir: {}
