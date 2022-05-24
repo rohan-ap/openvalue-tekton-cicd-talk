@@ -16,9 +16,6 @@ spec:
         namespace: openvalue-ops
         generateName: hello-world-service-run-
       spec:
-#        serviceAccountNames:
-#          - taskName: deploy
-#            serviceAccountName: pipeline
         pipelineRef:
           name: hello-world-service
         params:

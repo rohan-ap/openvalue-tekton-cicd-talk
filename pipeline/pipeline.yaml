@@ -12,6 +12,7 @@ spec:
       name: branch
       type: string
       default: master
+
   tasks:
     - name: fetch-repo
       taskRef:
@@ -51,28 +52,48 @@ spec:
         kind: Task
         name: kaniko
       params:
+        - name: BUILDER_IMAGE
+          value: gcr.io/kaniko-project/executor:v1.8.1
         - name: DOCKERFILE
           value: Dockerfile
         - name: CONTEXT
           value: hello-world-service
         - name: IMAGE
-          value: "image-registry.openshift-image-registry.svc:5000/openvalue-ops/hello-world-service:latest"
+          value: "europe-west1-docker.pkg.dev/openvalue-tekton-cicd-talk/docker/hello-world-service:$(params.commit)"
         - name: EXTRA_ARGS
           value:
             - "--destination"
-            - "image-registry.openshift-image-registry.svc:5000/openvalue-ops/hello-world-service:$(params.branch)"
+            - "europe-west1-docker.pkg.dev/openvalue-tekton-cicd-talk/docker/hello-world-service:$(params.branch)"
             - "--destination"
-            - "image-registry.openshift-image-registry.svc:5000/openvalue-ops/hello-world-service:$(params.commit)"
+            - "europe-west1-docker.pkg.dev/openvalue-tekton-cicd-talk/docker/hello-world-service:$(params.commit)"
             - "--skip-tls-verify"
       runAfter:
         - build
       workspaces:
         - name: source
           workspace: shared-workspace
+        - name: gcpcreds
+          workspace: gcpcreds
 
-#    - name: deploy
-#      runAfter:
-#        - create-image
+    - name: deploy
+      taskRef:
+        kind: Task
+        name: helm-upgrade-from-source
+      runAfter:
+        - create-image
+      params:
+        - name: charts_dir
+          value: hello-world-service/helm
+        - name: release_name
+          value: hello-world-service-release
+        - name: release_namespace
+          value: openvalue-prd
+        - name: overwrite_values
+          value: "image.tag=$(params.commit)"
+      workspaces:
+        - name: source
+          workspace: shared-workspace
+
   finally:
     - name: notify-build-failed
       when:
@@ -86,17 +107,17 @@ spec:
         - name: text
           value: "[hello-world-service] Build failed $(params.branch) ($(params.commit))!"
 
-#    - name: notify-deploy-failed
-#      when:
-#          - input: $(tasks.deploy.status)
-#            operator: in
-#            values: [ "None", "Failed" ]
-#      taskRef:
-#        kind: Task
-#        name: slack-notify
-#      params:
-#        - name: text
-#          value: "[hello-world-service] Deploy failed $(params.branch) ($(params.commit))!"
+    - name: notify-deploy-failed
+      when:
+          - input: $(tasks.deploy.status)
+            operator: in
+            values: [ "None", "Failed" ]
+      taskRef:
+        kind: Task
+        name: slack-notify
+      params:
+        - name: text
+          value: "[hello-world-service] Deploy failed $(params.branch) ($(params.commit))!"
 
     - name: notify-success
       when:
@@ -113,3 +134,4 @@ spec:
   workspaces:
     - name: shared-workspace
     - name: maven-settings
+    - name: gcpcreds

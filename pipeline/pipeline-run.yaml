@@ -8,7 +8,7 @@ spec:
     name: hello-world-service
   params:
     - name: commit
-      value: 463873e196274e570fe98e55ba4075b7b9333f8a
+      value: 0075e2b8900e7ed0fe595f36dba141536d476d5f
     - name: branch
       value: master
   workspaces:
@@ -22,3 +22,6 @@ spec:
           resources:
             requests:
               storage: 1Gi
+    - name: gcpcreds
+      secret:
+        secretName: gcp-creds
