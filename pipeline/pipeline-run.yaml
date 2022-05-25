@@ -8,7 +8,7 @@ spec:
     name: hello-world-service
   params:
     - name: commit
-      value: a58868ad8e8aa9f700422da8f3cb4a609f133feb
+      value: 45a2d3b6c1b4028fb9c849ac331850c342779b33
     - name: branch
       value: master
   workspaces:
