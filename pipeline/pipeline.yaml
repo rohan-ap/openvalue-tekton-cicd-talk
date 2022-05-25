@@ -62,10 +62,6 @@ spec:
           value: "europe-west1-docker.pkg.dev/openvalue-tekton-cicd-talk/docker/hello-world-service:$(params.commit)"
         - name: EXTRA_ARGS
           value:
-            - "--destination"
-            - "europe-west1-docker.pkg.dev/openvalue-tekton-cicd-talk/docker/hello-world-service:$(params.branch)"
-            - "--destination"
-            - "europe-west1-docker.pkg.dev/openvalue-tekton-cicd-talk/docker/hello-world-service:$(params.commit)"
             - "--skip-tls-verify"
       runAfter:
         - build
