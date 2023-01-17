@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  namespace: openvalue-ops
+  namespace: sonar-youtube
   name: hello-world-service
 spec:
   params:
@@ -20,7 +20,7 @@ spec:
         name: git-clone
       params:
         - name: url
-          value: https://github.com/kevto/openvalue-tekton-cicd-talk.git
+          value: https://github.com/rohan-ap/openvalue-tekton-cicd-talk.git
         - name: revision
           value: $(params.branch)
       workspaces:
@@ -59,7 +59,7 @@ spec:
         - name: CONTEXT
           value: hello-world-service
         - name: IMAGE
-          value: "europe-west1-docker.pkg.dev/openvalue-tekton-cicd-talk/docker/hello-world-service:$(params.commit)"
+          value: "quay.io/rohanp/sonar-youtube:$(params.commit)"
         - name: EXTRA_ARGS
           value:
             - "--skip-tls-verify"
